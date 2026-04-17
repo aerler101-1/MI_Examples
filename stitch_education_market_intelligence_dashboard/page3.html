@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>State Profile - SlateMetric</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#faf8ff",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-container-low": "#f2f3ff",
+                        "surface-variant": "#dae2fd",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-primary-container": "#fefcff",
+                        "surface-container": "#eaedff",
+                        "tertiary": "#006947",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#2170e4",
+                        "surface-tint": "#005ac2",
+                        "tertiary-container": "#00855b",
+                        "primary-fixed-dim": "#adc6ff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "inverse-surface": "#283044",
+                        "surface-container-highest": "#dae2fd",
+                        "on-tertiary-container": "#f5fff6",
+                        "on-background": "#131b2e",
+                        "error": "#ba1a1a",
+                        "on-surface": "#131b2e",
+                        "surface-container-high": "#e2e7ff",
+                        "on-secondary-container": "#5c647a",
+                        "on-tertiary-fixed": "#002113",
+                        "outline": "#727785",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#001a42",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "secondary-container": "#dae2fd",
+                        "outline-variant": "#c2c6d6",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "surface-dim": "#d2d9f4",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "secondary": "#565e74",
+                        "primary": "#0058be",
+                        "inverse-primary": "#adc6ff",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#d8e2ff",
+                        "surface": "#faf8ff",
+                        "on-surface-variant": "#424754"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(242, 243, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #0058be 0%, #2170e4 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-[#faf8ff] fixed top-0 z-50 w-full shadow-[0_12px_40px_rgba(19,27,46,0.06)] font-inter text-sm antialiased">
+<div class="flex items-center justify-between px-8 py-4 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-[#131b2e]">SlateMetric</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-slate-500 hover:text-slate-900 transition-colors" href="#">Dashboard</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors" href="#">Districts</a>
+<a class="text-[#3B82F6] border-b-2 border-[#3B82F6] pb-2 font-semibold" href="#">States</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors" href="#">Policy</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="bg-surface-container-highest rounded-full pl-10 pr-4 py-2 border-none focus:ring-2 focus:ring-primary/20 w-64 text-sm" placeholder="Search jurisdictions..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-slate-500">
+<button class="hover:bg-slate-100 p-2 rounded-full transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:bg-slate-100 p-2 rounded-full transition-colors"><span class="material-symbols-outlined">help</span></button>
+<button class="hover:bg-slate-100 p-2 rounded-full transition-colors"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+<button class="primary-gradient text-white px-5 py-2 rounded-xl font-medium shadow-lg active:scale-95 duration-200">
+                    Export Report
+                </button>
+</div>
+</div>
+</header>
+<!-- Sidebar (Shared Component Reference) -->
+<aside class="hidden xl:flex flex-col h-screen w-64 fixed left-0 top-0 bg-[#283044] py-6 z-40 text-white font-inter tracking-tight shadow-xl">
+<div class="px-6 mb-10">
+<h2 class="text-lg font-black">Slate Metric</h2>
+<p class="text-xs text-slate-400">Architectural Intelligence</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 bg-[#3B82F6] text-white rounded-lg mx-2 px-4 py-3 transition-all duration-300" href="page1.html">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="text-sm font-semibold tracking-tight">Market Explorer</span>
+</a>
+<a class="flex items-center gap-3 text-slate-400 hover:text-white px-6 py-3 hover:bg-slate-700/50 transition-all duration-300" href="page2.html">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="text-sm font-medium tracking-tight">District Profiles</span>
+</a>
+<a class="flex items-center gap-3 text-slate-400 hover:text-white px-6 py-3 hover:bg-slate-700/50 transition-all duration-300" href="page3.html">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="text-sm font-medium tracking-tight">State Analytics</span>
+</a>
+
+</nav>
+<div class="px-4 mt-auto">
+<a class="flex items-center gap-3 text-slate-400 hover:text-white px-4 py-3 hover:bg-slate-700/50 transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Documentation</span>
+</a>
+<button class="w-full mt-4 bg-slate-700/30 text-white border border-slate-600 rounded-lg py-2 text-sm font-medium hover:bg-slate-700 transition-all">
+                System Settings
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-24 xl:pl-64 min-h-screen">
+<div class="px-8 py-8 max-w-7xl mx-auto">
+<!-- Breadcrumbs & Header -->
+<div class="mb-10">
+<div class="flex items-center gap-2 text-on-surface-variant text-xs font-semibold tracking-wider uppercase mb-2">
+<a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">States</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-on-surface">Massachusetts</span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Massachusetts</h1>
+<p class="text-on-surface-variant max-w-2xl">Analysis of EdTech procurement trends, curriculum adoption rates, and legislative impacts across 400+ districts.</p>
+</div>
+<div class="flex gap-3">
+<span class="inline-flex items-center px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-md text-xs font-bold">
+                            UPDATING LIVE
+                        </span>
+<span class="inline-flex items-center px-3 py-1 bg-secondary-container text-on-secondary-container rounded-md text-xs font-bold uppercase tracking-tighter">
+                            Fiscal Year 2024
+                        </span>
+</div>
+</div>
+</div>
+<!-- Aggregated Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-5xl">groups</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Total Enrollment</p>
+<h3 class="text-3xl font-black text-on-surface">911,529</h3>
+<div class="mt-4 flex items-center gap-1 text-tertiary text-xs font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+1.2% YOY</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-5xl">language</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">MLL Population</p>
+<h3 class="text-3xl font-black text-on-surface">12.4%</h3>
+<div class="mt-4 flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="font-bold">113,030</span> students total
+                    </div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-5xl">pie_chart</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Market Saturation</p>
+<h3 class="text-3xl font-black text-on-surface">68.2%</h3>
+<div class="mt-4 flex items-center gap-1 text-primary text-xs font-bold">
+<span>Digital Core Active</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-5xl">account_balance</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">State Funding Index</p>
+<h3 class="text-3xl font-black text-on-surface">High</h3>
+<div class="mt-4 flex items-center gap-1 text-tertiary text-xs font-bold">
+<span>Tier 1 Budget Priority</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid: Policies & Market Leaders -->
+<div class="grid grid-cols-12 gap-8">
+<!-- State Overview (Policy & Practices) -->
+<div class="col-span-12 lg:col-span-5 bg-surface-container-low p-8 rounded-xl flex flex-col gap-6">
+<div>
+<h2 class="text-xl font-extrabold text-on-surface mb-2">State Overview</h2>
+<p class="text-on-surface-variant leading-relaxed text-sm">Massachusetts operates under a decentralized procurement model, yet maintains strict adherence to the Student Data Privacy Consortium (SDPC) standards.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 items-start border-l-4 border-primary">
+<span class="material-symbols-outlined text-primary mt-1">description</span>
+<div>
+<p class="text-sm font-bold text-on-surface">Science of Reading Mandate</p>
+<p class="text-xs text-on-surface-variant">SB-261 requires all K-3 core curricula to align with evidence-based literacy standards by 2025.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 items-start border-l-4 border-tertiary">
+<span class="material-symbols-outlined text-tertiary mt-1">payments</span>
+<div>
+<p class="text-sm font-bold text-on-surface">District Grant Cycles</p>
+<p class="text-xs text-on-surface-variant">Competitive grant funding released every Q1; focus on STEM and MLL support materials.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg flex gap-4 items-start border-l-4 border-error">
+<span class="material-symbols-outlined text-error mt-1">lock</span>
+<div>
+<p class="text-sm font-bold text-on-surface">Data Privacy Agreement (DPA)</p>
+<p class="text-xs text-on-surface-variant">Automatic blacklisting for vendors failing the METDA compliance audit.</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6">
+<div class="rounded-xl overflow-hidden grayscale contrast-125 opacity-40">
+<img alt="Stylized map of Massachusetts districts highlighting educational spending density by region with a clean architectural aesthetic" class="w-full h-32 object-cover" data-location="Massachusetts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWNSfk42eAa4W07YEEOSFRcCPA3ryXcbXdcCeAMHF1din967u_7nooyvDF1S4tmDs6BZsyJq56ra_rH9CSrNWrzMBt0VPEYkwRLeBifr8Kl26c3jkrr_tKAYYr0uaX2V6og5lT1XIODHLEszrvPzzvTrJCEwHoRPpP8xUw4QHvcYlhLsgXOZTp8Wi2ZuFoSRbhCMpHTWN5DftJbtVt4DsRiY7Ls95nxV8W4c5FL6Cbnh0CK9vxd90Iq_ulzcp6881GobL0Z8Gp6wM5"/>
+</div>
+</div>
+</div>
+<!-- Market Leaders Section -->
+<div class="col-span-12 lg:col-span-7 grid grid-cols-1 gap-8">
+<!-- Math Leaders -->
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-extrabold text-on-surface">Top 5 Core Math Curriculums</h2>
+<span class="text-xs font-bold text-primary px-3 py-1 bg-primary-fixed rounded-full">By Market Share %</span>
+</div>
+<div class="space-y-6">
+<!-- Item 1 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Eureka Math (Great Minds)</span>
+<span class="text-sm font-black text-on-surface">34%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[34%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">EnVision Math (Savvas)</span>
+<span class="text-sm font-black text-on-surface">22%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[22%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Go Math! (HMH)</span>
+<span class="text-sm font-black text-on-surface">18%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[18%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Illustrative Mathematics</span>
+<span class="text-sm font-black text-on-surface">14%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[14%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Bridges in Mathematics</span>
+<span class="text-sm font-black text-on-surface">9%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[9%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- ELA Leaders -->
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-extrabold text-on-surface">Top 5 Core ELA Curriculums</h2>
+<span class="text-xs font-bold text-tertiary px-3 py-1 bg-tertiary-fixed rounded-full">By Market Share %</span>
+</div>
+<div class="space-y-6">
+<!-- Item 1 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Amplify CKLA</span>
+<span class="text-sm font-black text-on-surface">29%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full w-[29%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Wonders (McGraw Hill)</span>
+<span class="text-sm font-black text-on-surface">25%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full w-[25%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Into Reading (HMH)</span>
+<span class="text-sm font-black text-on-surface">21%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full w-[21%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Wit &amp; Wisdom (Great Minds)</span>
+<span class="text-sm font-black text-on-surface">16%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full w-[16%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Lucy Calkins (Units of Study)</span>
+<span class="text-sm font-black text-on-surface">7%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full w-[7%] transition-all group-hover:brightness-110"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / System Actions -->
+<footer class="mt-16 pt-8 border-t border-surface-container text-on-surface-variant flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-sm">Data snapshot current as of October 24, 2023. Aggregated from 402 District Procurement Logs.</p>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-semibold hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">history</span>
+                        View Audit Log
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-semibold hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">share</span>
+                        Share Dashboard
+                    </button>
+</div>
+</footer>
+</div>
+</main>
+<!-- Contextual FAB (Restricted Use Case) -->
+<button class="fixed bottom-8 right-8 primary-gradient text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 z-50 md:hidden">
+<span class="material-symbols-outlined">add</span>
+</button>
+</body></html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Landing page</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="landing">
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo">CI</div>
+        <div>
+          <h1>Curriculum Intelligence Explorer</h1>
+          <p>Multi-page concept with shared NLP context, map, district, and state views</p>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a data-page="index.html" href="index.html">Landing</a>
+        <a data-page="map.html" href="map.html">Map</a>
+        <a data-page="district.html" href="district.html">District</a>
+        <a data-page="state.html" href="state.html">State</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page">
+    <div class="section-header" style="margin-bottom:18px">
+      <div>
+        <h2 class="page-title">Landing page</h2>
+        <p class="page-intro">This landing view focuses on the NLP prompt and a general data snapshot. It is the front door into the map, district, and state pages.</p>
+      </div>
+    </div>
+    
+<div class="page-grid landing-grid">
+  <section class="panel hero">
+    <span class="eyebrow">Landing page • NLP prompt and general data</span>
+    <h2>Ask the market explorer in natural language, then branch into deeper pages.</h2>
+    <p>Encourage queries that specify subject area, grade level, product type, school year, and location. The parser also applies demo operationalizations for prompts like “districts with the most multilingual learners,” “majority white districts,” “districts with HQIM,” and district size when the user does not define them.</p>
+    <div class="hero-grid">
+      <div class="panel" style="padding:18px">
+        <div class="section-header">
+          <div>
+            <h3>Natural language prompt</h3>
+            <div class="small-text">Prompt users to include subject area, grade level, product type, school year, and location.</div>
+          </div>
+        </div>
+        <label>
+          Ask a question
+          <textarea id="landingQuery" placeholder="Example: small districts likely to change curriculum in grade 6 math in Texas for 2025-26"></textarea>
+        </label>
+        <div class="examples" id="landingExamples"></div>
+        <div class="button-row">
+          <button id="landingRun" class="primary" type="button">Run query</button>
+          <button id="landingReset" class="secondary" type="button">Reset</button>
+          <a id="landingOpenMap" class="button-link secondary" href="map.html">Open map page</a>
+          <button id="landingExport" class="ghost" type="button">Export current results</button>
+        </div>
+      </div>
+      <aside class="panel" style="padding:18px">
+        <div class="section-header">
+          <div>
+            <h3>General filter controls</h3>
+            <div class="small-text">Use these to adjust the default dataset slice before moving into map, district, or state pages.</div>
+          </div>
+        </div>
+        <div id="landingFilters"></div>
+      </aside>
+    </div>
+  </section>
+  <aside class="panel stack">
+    <div>
+      <h3>Query interpretation</h3>
+      <div class="chip-row" id="landingInterpretation"></div>
+    </div>
+    <div>
+      <h3>Current focus</h3>
+      <div id="landingCurrentFocus"></div>
+    </div>
+  </aside>
+  <section class="panel" style="grid-column:1/-1">
+    <div class="section-header">
+      <div>
+        <h3>General data snapshot</h3>
+        <div class="small-text">High-level metrics for the current NLP and filter context.</div>
+      </div>
+    </div>
+    <div class="metrics-grid" id="landingMetrics"></div>
+  </section>
+  <section class="panel">
+    <div class="section-header">
+      <div>
+        <h3>State highlights</h3>
+        <div class="small-text">A fast scan of the current state opportunities before opening the state page.</div>
+      </div>
+    </div>
+    <div id="landingStateHighlights"></div>
+  </section>
+  <section class="panel">
+    <div class="section-header">
+      <div>
+        <h3>District preview</h3>
+        <div class="small-text">A trimmed view of districts in the current slice. Open district or state pages from here.</div>
+      </div>
+    </div>
+    <div id="landingDistrictTable"></div>
+  </section>
+</div>
+
+  </main>
+  <script src="assets/app.js"></script>
+</body>
+</html>

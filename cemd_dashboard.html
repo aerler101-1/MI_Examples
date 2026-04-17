@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEMD Market Intelligence Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night-sky: #0D1B2E;
+    --night-sky-mid: #162640;
+    --night-sky-light: #1E3354;
+    --aqua: #00C2CC;
+    --aqua-dim: #00C2CC22;
+    --naranja: #F26522;
+    --daisy: #F5C518;
+    --white: #F0F4F8;
+    --muted: #8BA3BE;
+    --border: #1E3354;
+    --card: #111E30;
+    --card-hover: #162640;
+    --success: #3DD68C;
+    --warn: #F5C518;
+    --danger: #F26522;
+    --font-head: 'Montserrat', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--night-sky);
+    color: var(--white);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--night-sky-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--aqua);
+  }
+  .logo span { color: var(--white); }
+  .header-sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    border-left: 1px solid var(--border);
+    padding-left: 1.5rem;
+  }
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .badge {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    background: var(--aqua-dim);
+    color: var(--aqua);
+    border: 1px solid var(--aqua);
+    border-radius: 4px;
+    padding: 2px 8px;
+    letter-spacing: .06em;
+  }
+  .badge.orange { background: #F2652222; color: var(--naranja); border-color: var(--naranja); }
+
+  /* ─── TABS ─── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--night-sky-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    overflow-x: auto;
+  }
+  .tab {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 14px 22px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all .2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab:hover { color: var(--white); }
+  .tab.active { color: var(--aqua); border-bottom-color: var(--aqua); }
+  .tab-icon { font-size: 14px; }
+
+  /* ─── LAYOUT ─── */
+  .panel { display: none; padding: 2rem; max-width: 1400px; margin: 0 auto; }
+  .panel.active { display: block; }
+
+  /* ─── QUERY PANEL ─── */
+  .query-hero {
+    text-align: center;
+    padding: 3rem 0 2rem;
+  }
+  .query-hero h1 {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -.02em;
+    margin-bottom: .5rem;
+  }
+  .query-hero h1 span { color: var(--aqua); }
+  .query-hero p {
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .query-box-wrap {
+    max-width: 760px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+  }
+  .query-input {
+    width: 100%;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 5rem 1.1rem 1.4rem;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--white);
+    outline: none;
+    transition: border .2s, box-shadow .2s;
+    resize: none;
+    min-height: 72px;
+    line-height: 1.5;
+  }
+  .query-input::placeholder { color: var(--muted); }
+  .query-input:focus { border-color: var(--aqua); box-shadow: 0 0 0 3px var(--aqua-dim); }
+  .query-submit {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    background: var(--aqua);
+    color: var(--night-sky);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .06em;
+    cursor: pointer;
+    transition: all .15s;
+    text-transform: uppercase;
+  }
+  .query-submit:hover { background: #00d9e4; transform: translateY(-1px); }
+  .query-submit:active { transform: translateY(0); }
+
+  .param-guide {
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+  }
+  .param-guide-title {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--aqua);
+    margin-bottom: .75rem;
+  }
+  .param-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .param-pill {
+    background: var(--night-sky-light);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .param-pill strong { color: var(--white); font-weight: 600; }
+
+  .smart-mappings {
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .75rem;
+  }
+  .mapping-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+  }
+  .mapping-card-label {
+    font-size: 10px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--daisy);
+    margin-bottom: .4rem;
+  }
+  .mapping-card-text { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .mapping-card-text em { color: var(--white); font-style: normal; font-weight: 500; }
+
+  .sample-queries {
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+  }
+  .sample-label {
+    font-size: 10px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+    margin-bottom: .75rem;
+  }
+  .sample-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    background: var(--night-sky-light);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .chip:hover { border-color: var(--aqua); color: var(--aqua); background: var(--aqua-dim); }
+
+  /* Query Results */
+  .query-results {
+    max-width: 760px;
+    margin: 0 auto;
+    display: none;
+  }
+  .query-results.visible { display: block; }
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .results-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .04em;
+  }
+  .results-meta { font-size: 11px; color: var(--muted); }
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .results-table th {
+    background: var(--night-sky-light);
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .results-table td {
+    padding: 10px 14px;
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .results-table tr:hover td { background: var(--card-hover); }
+  .pill-score {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .pill-score.high { background: #3DD68C22; color: var(--success); border: 1px solid var(--success); }
+  .pill-score.mid { background: #F5C51822; color: var(--daisy); border: 1px solid var(--daisy); }
+  .pill-score.low { background: #F2652222; color: var(--naranja); border: 1px solid var(--naranja); }
+
+  .thinking-indicator {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 1.5rem 0;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .thinking-indicator.visible { display: flex; }
+  .dots span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--aqua);
+    border-radius: 50%;
+    animation: dot-bounce 1.2s infinite;
+  }
+  .dots span:nth-child(2) { animation-delay: .2s; }
+  .dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes dot-bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: .4; }
+    40% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* ─── MAP PANEL ─── */
+  .map-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1.5rem;
+    min-height: calc(100vh - 180px);
+  }
+  .filter-sidebar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+  }
+  .filter-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--aqua);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .filter-reset {
+    font-size: 10px;
+    color: var(--muted);
+    cursor: pointer;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .filter-reset:hover { color: var(--naranja); }
+  .filter-group { margin-bottom: 1.2rem; }
+  .filter-group label {
+    display: block;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: .5rem;
+  }
+  .filter-select, .filter-input {
+    width: 100%;
+    background: var(--night-sky-light);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+    transition: border .15s;
+    -webkit-appearance: none;
+  }
+  .filter-select:focus, .filter-input:focus { border-color: var(--aqua); }
+  .filter-select option { background: var(--night-sky); }
+  .filter-checkboxes { display: flex; flex-direction: column; gap: 6px; }
+  .filter-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .filter-check input[type="checkbox"] { accent-color: var(--aqua); width: 13px; height: 13px; cursor: pointer; }
+  .filter-check:hover { color: var(--white); }
+  .filter-check input:checked + span { color: var(--white); }
+  .apply-btn {
+    width: 100%;
+    background: var(--aqua);
+    color: var(--night-sky);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .15s;
+    margin-top: .5rem;
+  }
+  .apply-btn:hover { background: #00d9e4; }
+
+  .map-main { display: flex; flex-direction: column; gap: 1.5rem; }
+  .map-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .map-stats { display: flex; gap: 1.5rem; }
+  .stat-item { display: flex; flex-direction: column; gap: 2px; }
+  .stat-val {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -.02em;
+    color: var(--aqua);
+  }
+  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .export-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: var(--white);
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .export-btn:hover { border-color: var(--daisy); color: var(--daisy); }
+
+  .us-map-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .us-map-container svg { width: 100%; height: auto; max-height: 380px; }
+
+  /* SVG state styles */
+  .state-path {
+    fill: var(--night-sky-light);
+    stroke: var(--night-sky);
+    stroke-width: 0.5;
+    cursor: pointer;
+    transition: fill .15s;
+  }
+  .state-path:hover { fill: #2a4a6e; }
+  .state-path.active { fill: var(--aqua); opacity: .85; }
+  .state-path.hot { fill: var(--naranja); opacity: .75; }
+  .state-path.warm { fill: var(--daisy); opacity: .65; }
+
+  .map-legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  .results-grid {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .results-grid-header {
+    background: var(--night-sky-light);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .results-count {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .04em;
+  }
+  .results-count span { color: var(--aqua); }
+
+  /* ─── DISTRICT PANEL ─── */
+  .district-search-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+  .district-search-bar input {
+    flex: 1;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border .15s;
+  }
+  .district-search-bar input:focus { border-color: var(--aqua); }
+  .district-search-bar input::placeholder { color: var(--muted); }
+  .btn-primary {
+    background: var(--aqua);
+    color: var(--night-sky);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s;
+  }
+  .btn-primary:hover { background: #00d9e4; }
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s;
+  }
+  .btn-outline:hover { border-color: var(--naranja); color: var(--naranja); }
+
+  .district-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .district-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem;
+  }
+  .district-card.full { grid-column: 1 / -1; }
+  .card-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--aqua);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .district-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -.02em;
+    margin-bottom: .2rem;
+  }
+  .district-meta { font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+  .nces-id {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--night-sky-light);
+    color: var(--daisy);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+  }
+  .demo-item {}
+  .demo-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 3px; }
+  .demo-val { font-family: var(--font-head); font-weight: 600; font-size: 14px; }
+
+  .progress-bar-wrap { margin-bottom: .6rem; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .progress-label span:last-child { color: var(--white); font-weight: 600; }
+  .progress-track {
+    height: 5px;
+    background: var(--night-sky-light);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: var(--aqua);
+    transition: width .4s ease;
+  }
+  .progress-fill.orange { background: var(--naranja); }
+  .progress-fill.yellow { background: var(--daisy); }
+  .progress-fill.green { background: var(--success); }
+
+  .predict-grid {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+  }
+  .predict-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .7rem;
+    background: var(--night-sky-light);
+    border-radius: 8px;
+  }
+  .predict-subject { flex: 1; font-size: 12px; }
+  .predict-grade { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .predict-score-ring {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 13px;
+    border: 3px solid;
+    flex-shrink: 0;
+  }
+  .ring-high { border-color: var(--success); color: var(--success); background: #3DD68C11; }
+  .ring-mid { border-color: var(--daisy); color: var(--daisy); background: #F5C51811; }
+  .ring-low { border-color: var(--muted); color: var(--muted); background: transparent; }
+  .predict-trend { font-size: 10px; }
+  .trend-up { color: var(--success); }
+  .trend-down { color: var(--muted); }
+
+  .curriculum-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .curriculum-table th {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 0 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .curriculum-table td {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--white);
+  }
+  .curriculum-table tr:last-child td { border-bottom: none; }
+  .hqim-tag {
+    font-size: 9px;
+    background: #3DD68C22;
+    color: var(--success);
+    border: 1px solid var(--success);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    letter-spacing: .06em;
+    margin-left: 6px;
+  }
+
+  .asset-list { display: flex; flex-direction: column; gap: .5rem; }
+  .asset-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: .6rem .8rem;
+    background: var(--night-sky-light);
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .asset-item:hover { background: #2a3f5a; }
+  .asset-icon { font-size: 16px; }
+  .asset-name { flex: 1; }
+  .asset-date { font-size: 10px; color: var(--muted); }
+
+  .contacts-list { display: flex; flex-direction: column; gap: .75rem; }
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem;
+    background: var(--night-sky-light);
+    border-radius: 8px;
+  }
+  .contact-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--aqua-dim);
+    border: 2px solid var(--aqua);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--aqua);
+    flex-shrink: 0;
+  }
+  .contact-info { flex: 1; }
+  .contact-name { font-size: 12px; font-weight: 500; }
+  .contact-role { font-size: 10px; color: var(--muted); }
+  .contact-email { font-size: 10px; color: var(--aqua); font-family: var(--font-mono); }
+
+  .report-preview {
+    background: var(--night-sky-light);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border .15s;
+  }
+  .report-preview:hover { border-color: var(--naranja); }
+  .report-preview-icon { font-size: 36px; margin-bottom: .5rem; }
+  .report-preview-label { font-size: 12px; color: var(--muted); }
+  .report-preview-label span { color: var(--naranja); font-weight: 600; }
+
+  /* ─── STATE PANEL ─── */
+  .state-selector-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+  .state-select-large {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--white);
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    min-width: 240px;
+    transition: border .15s;
+  }
+  .state-select-large:focus { border-color: var(--aqua); }
+  .state-select-large option { background: var(--night-sky); }
+
+  .state-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .state-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem;
+  }
+  .state-card.full { grid-column: 1 / -1; }
+  .rank-list { display: flex; flex-direction: column; gap: .5rem; }
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding: .5rem .75rem;
+    background: var(--night-sky-light);
+    border-radius: 8px;
+  }
+  .rank-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .rank-num.gold { color: var(--daisy); }
+  .rank-curriculum { flex: 1; font-size: 12px; }
+  .rank-pct {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--aqua);
+  }
+  .rank-bar {
+    width: 80px;
+    height: 4px;
+    background: var(--night-sky);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .rank-bar-fill { height: 100%; background: var(--aqua); border-radius: 4px; }
+
+  .policy-list { display: flex; flex-direction: column; gap: .75rem; }
+  .policy-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+  }
+  .policy-header { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; margin-bottom: .3rem; }
+  .policy-name { font-size: 13px; font-weight: 500; }
+  .policy-tag {
+    font-size: 9px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    letter-spacing: .06em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .tag-active { background: #3DD68C22; color: var(--success); border: 1px solid var(--success); }
+  .tag-pending { background: #F5C51822; color: var(--daisy); border: 1px solid var(--daisy); }
+  .tag-monitoring { background: #F2652222; color: var(--naranja); border: 1px solid var(--naranja); }
+  .policy-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  .state-snapshot {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .snap-item {
+    background: var(--night-sky-light);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+  }
+  .snap-val {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -.02em;
+    color: var(--aqua);
+  }
+  .snap-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; }
+
+  /* Loading animation */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn .3s ease forwards; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--night-sky); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* US Map */
+  .map-tooltip {
+    position: absolute;
+    background: var(--night-sky-mid);
+    border: 1px solid var(--aqua);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    pointer-events: none;
+    display: none;
+    z-index: 10;
+  }
+  .map-tooltip strong { font-family: var(--font-head); font-weight: 700; display: block; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CEMD <span>Intelligence</span></div>
+  <div class="header-sub">Market Intelligence Platform</div>
+  <div class="header-right">
+    <span class="badge">SY 2023–24</span>
+    <span class="badge orange">Beta</span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tab active" onclick="switchTab('query')">
+    <span class="tab-icon">🔍</span> Natural Language Query
+  </div>
+  <div class="tab" onclick="switchTab('map')">
+    <span class="tab-icon">🗺️</span> Market Map
+  </div>
+  <div class="tab" onclick="switchTab('district')">
+    <span class="tab-icon">🏫</span> District Profile
+  </div>
+  <div class="tab" onclick="switchTab('state')">
+    <span class="tab-icon">📋</span> State Profile
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- QUERY PANEL                                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-query" class="panel active">
+  <div class="query-hero">
+    <h1>Ask the <span>Market</span> Anything</h1>
+    <p>Query district procurement, curriculum adoption, and demographic data in plain English. Specify what you're looking for using the parameters below.</p>
+  </div>
+
+  <div class="query-box-wrap">
+    <textarea class="query-input" id="queryInput" rows="2"
+      placeholder="e.g., Which districts in Texas adopted a new K–5 math curriculum in 2023–24?"></textarea>
+    <button class="query-submit" onclick="runQuery()">Search →</button>
+  </div>
+
+  <div class="param-guide">
+    <div class="param-guide-title">💡 Tip — Include these parameters for sharper results</div>
+    <div class="param-pills">
+      <div class="param-pill"><strong>Subject area:</strong> Math, ELA, Science, Social Studies</div>
+      <div class="param-pill"><strong>Grade level:</strong> K–2, 3–5, 6–8, 9–12, or specific grade</div>
+      <div class="param-pill"><strong>Product type:</strong> Core curriculum, Supplemental, Intervention, Assessment</div>
+      <div class="param-pill"><strong>School year:</strong> e.g., "2022–23" or "last three years"</div>
+      <div class="param-pill"><strong>Location:</strong> State, region, city, or district name / NCES ID</div>
+    </div>
+  </div>
+
+  <div class="smart-mappings">
+    <div class="mapping-card">
+      <div class="mapping-card-label">🌐 Demographics</div>
+      <div class="mapping-card-text">
+        "Multilingual learners" → districts where <em>ML students ≥ 15%</em> of enrollment<br>
+        "Majority white" → districts where <em>White students ≥ 50%</em>
+      </div>
+    </div>
+    <div class="mapping-card">
+      <div class="mapping-card-label">📏 District Size</div>
+      <div class="mapping-card-text">
+        <em>Small</em> = under 1,000 students<br>
+        <em>Mid-size</em> = 1,000–10,000<br>
+        <em>Large</em> = over 10,000 students
+      </div>
+    </div>
+    <div class="mapping-card">
+      <div class="mapping-card-label">⭐ Curriculum Quality</div>
+      <div class="mapping-card-text">
+        "HQIM" → districts with <em>at least one</em> EdReports green-rated core product<br>
+        Can combine: "HQIM Math AND not HQIM ELA"
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-queries">
+    <div class="sample-label">Try a sample query</div>
+    <div class="sample-chips">
+      <div class="chip" onclick="fillQuery(this)">Large districts in CA likely to switch ELA curriculum</div>
+      <div class="chip" onclick="fillQuery(this)">Midwest districts with high ML populations using HQIM Math</div>
+      <div class="chip" onclick="fillQuery(this)">Districts that adopted Illustrative Mathematics in 2022–23 or 2023–24</div>
+      <div class="chip" onclick="fillQuery(this)">Small rural districts in TX with no HQIM core curriculum</div>
+      <div class="chip" onclick="fillQuery(this)">Districts purchasing external strategic planning support this year</div>
+      <div class="chip" onclick="fillQuery(this)">High-poverty districts in the Southeast that recently adopted new ELA</div>
+    </div>
+  </div>
+
+  <div class="thinking-indicator" id="thinkingIndicator">
+    <div class="dots">
+      <span></span><span></span><span></span>
+    </div>
+    <span id="thinkingText">Parsing query and applying parameter mappings…</span>
+  </div>
+
+  <div class="query-results" id="queryResults">
+    <div class="results-header">
+      <div class="results-title" id="resultsTitle">Results</div>
+      <div style="display:flex;gap:.75rem;align-items:center">
+        <div class="results-meta" id="resultsMeta"></div>
+        <button class="export-btn" onclick="alert('Exporting CSV…')">⬇ Export</button>
+      </div>
+    </div>
+    <table class="results-table" id="resultsTable">
+      <thead id="resultsHead"></thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MAP PANEL                                   -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-map" class="panel">
+  <div class="map-layout">
+    <div class="filter-sidebar">
+      <div class="filter-title">Filters <span class="filter-reset" onclick="resetFilters()">Reset all</span></div>
+
+      <div class="filter-group">
+        <label>Academic Year</label>
+        <select class="filter-select" id="f-year">
+          <option>2023–24</option>
+          <option>2022–23</option>
+          <option>2021–22</option>
+          <option>2020–21</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Content Area</label>
+        <select class="filter-select" id="f-content">
+          <option value="">All</option>
+          <option>Math</option>
+          <option>ELA / Literacy</option>
+          <option>Science</option>
+          <option>Social Studies</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Grade Level</label>
+        <select class="filter-select" id="f-grade">
+          <option value="">All Grades</option>
+          <option>K–2</option>
+          <option>3–5</option>
+          <option>6–8</option>
+          <option>9–12</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Product Type</label>
+        <div class="filter-checkboxes">
+          <label class="filter-check"><input type="checkbox" checked><span>Core Curriculum</span></label>
+          <label class="filter-check"><input type="checkbox"><span>Supplemental</span></label>
+          <label class="filter-check"><input type="checkbox"><span>Intervention</span></label>
+          <label class="filter-check"><input type="checkbox"><span>Assessment</span></label>
+          <label class="filter-check"><input type="checkbox"><span>Professional Learning</span></label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>State</label>
+        <select class="filter-select" id="f-state">
+          <option value="">All States</option>
+          <option>California</option>
+          <option>Texas</option>
+          <option>Florida</option>
+          <option>New York</option>
+          <option>Illinois</option>
+          <option>Ohio</option>
+          <option>Georgia</option>
+          <option>Michigan</option>
+          <option>North Carolina</option>
+          <option>Pennsylvania</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>LEA ID (NCES)</label>
+        <input type="text" class="filter-input" placeholder="e.g. 0600009" id="f-lea">
+      </div>
+
+      <div class="filter-group">
+        <label>HQIM Only</label>
+        <div class="filter-checkboxes">
+          <label class="filter-check"><input type="checkbox" id="f-hqim"><span>EdReports Green-rated only</span></label>
+        </div>
+      </div>
+
+      <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
+    </div>
+
+    <div class="map-main">
+      <div class="map-toolbar">
+        <div class="map-stats">
+          <div class="stat-item">
+            <div class="stat-val" id="map-district-count">12,847</div>
+            <div class="stat-label">Districts</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="map-product-count">3.2M</div>
+            <div class="stat-label">Students</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="map-state-count">50</div>
+            <div class="stat-label">States</div>
+          </div>
+        </div>
+        <button class="export-btn" onclick="exportMap()">⬇ Export All Results</button>
+      </div>
+
+      <div class="us-map-container" id="mapContainer">
+        <div class="map-tooltip" id="mapTooltip"></div>
+        <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" id="usSvg">
+          <!-- Simplified US state paths -->
+          <g id="states"></g>
+        </svg>
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--naranja)"></div> High adoption activity</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--daisy)"></div> Moderate activity</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--night-sky-light)"></div> Low / no data</div>
+        </div>
+      </div>
+
+      <div class="results-grid">
+        <div class="results-grid-header">
+          <div class="results-count">Showing <span id="showingCount">25</span> of <span id="totalCount">12,847</span> districts</div>
+          <div style="font-size:11px;color:var(--muted)">Sorted by adoption date ↓</div>
+        </div>
+        <table class="results-table" style="border-radius:0;border:none">
+          <thead>
+            <tr>
+              <th>District</th>
+              <th>State</th>
+              <th>Product</th>
+              <th>Content Area</th>
+              <th>Grade</th>
+              <th>Year</th>
+              <th>HQIM</th>
+            </tr>
+          </thead>
+          <tbody id="mapTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- DISTRICT PANEL                              -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-district" class="panel">
+  <div class="district-search-bar">
+    <input type="text" id="districtSearch" placeholder="Search by district name or NCES ID…" value="Los Angeles Unified School District">
+    <button class="btn-primary" onclick="loadDistrict()">Load Profile</button>
+    <button class="btn-outline" onclick="alert('Opening district leader report PDF…')">📄 District Leader Report</button>
+  </div>
+
+  <div class="district-layout" id="districtLayout">
+
+    <!-- Identity -->
+    <div class="district-card">
+      <div class="card-title">🏫 District Identity</div>
+      <div class="district-name">Los Angeles USD</div>
+      <div class="district-meta">Los Angeles County, California</div>
+      <div class="nces-id">NCES ID: 0622710</div>
+      <br>
+      <table class="curriculum-table">
+        <tr><td style="color:var(--muted);width:130px">LEA Type</td><td>Regular Public</td></tr>
+        <tr><td style="color:var(--muted)">Locale</td><td>Urban (11)</td></tr>
+        <tr><td style="color:var(--muted)">Enrollment</td><td>562,000 students</td></tr>
+        <tr><td style="color:var(--muted)">Schools</td><td>1,022 schools</td></tr>
+      </table>
+    </div>
+
+    <!-- Demographics -->
+    <div class="district-card">
+      <div class="card-title">📊 Demographics</div>
+      <div class="demo-grid">
+        <div class="demo-item"><div class="demo-label">Free/Reduced Lunch</div><div class="demo-val">80.1%</div></div>
+        <div class="demo-item"><div class="demo-label">English Learners</div><div class="demo-val">33.2%</div></div>
+        <div class="demo-item"><div class="demo-label">Students w/ Disabilities</div><div class="demo-val">11.4%</div></div>
+        <div class="demo-item"><div class="demo-label">Homeless</div><div class="demo-val">3.8%</div></div>
+      </div>
+      <br>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Hispanic / Latino</span><span>73.4%</span></div>
+        <div class="progress-track"><div class="progress-fill orange" style="width:73.4%"></div></div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Black / African American</span><span>8.8%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:8.8%;background:var(--aqua)"></div></div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>White</span><span>8.5%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:8.5%;background:var(--muted)"></div></div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Asian</span><span>6.1%</span></div>
+        <div class="progress-track"><div class="progress-fill yellow" style="width:6.1%"></div></div>
+      </div>
+    </div>
+
+    <!-- Predictive -->
+    <div class="district-card">
+      <div class="card-title">🎯 Predictive: Likelihood to Change Curriculum</div>
+      <div class="predict-grid">
+        <div class="predict-row">
+          <div>
+            <div class="predict-subject">K–5 Math</div>
+            <div class="predict-grade">Core / Next 18 months</div>
+          </div>
+          <div class="predict-score-ring ring-high">74%</div>
+          <div class="predict-trend trend-up">↑ Rising</div>
+        </div>
+        <div class="predict-row">
+          <div>
+            <div class="predict-subject">6–8 Math</div>
+            <div class="predict-grade">Core / Next 18 months</div>
+          </div>
+          <div class="predict-score-ring ring-mid">48%</div>
+          <div class="predict-trend trend-down">→ Stable</div>
+        </div>
+        <div class="predict-row">
+          <div>
+            <div class="predict-subject">K–5 ELA</div>
+            <div class="predict-grade">Core / Next 18 months</div>
+          </div>
+          <div class="predict-score-ring ring-high">81%</div>
+          <div class="predict-trend trend-up">↑ Rising</div>
+        </div>
+        <div class="predict-row">
+          <div>
+            <div class="predict-subject">6–8 ELA</div>
+            <div class="predict-grade">Core / Next 18 months</div>
+          </div>
+          <div class="predict-score-ring ring-low">22%</div>
+          <div class="predict-trend trend-down">↓ Low signal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Curriculum -->
+    <div class="district-card">
+      <div class="card-title">📚 Current Core Curriculum</div>
+      <table class="curriculum-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Grade</th>
+            <th>Product</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Math</td>
+            <td>K–5</td>
+            <td>Eureka Math <span class="hqim-tag">HQIM</span></td>
+            <td>2021</td>
+          </tr>
+          <tr>
+            <td>Math</td>
+            <td>6–8</td>
+            <td>Illustrative Math <span class="hqim-tag">HQIM</span></td>
+            <td>2022</td>
+          </tr>
+          <tr>
+            <td>ELA</td>
+            <td>K–5</td>
+            <td>Into Reading</td>
+            <td>2020</td>
+          </tr>
+          <tr>
+            <td>ELA</td>
+            <td>6–8</td>
+            <td>StudySync <span class="hqim-tag">HQIM</span></td>
+            <td>2021</td>
+          </tr>
+          <tr>
+            <td>Science</td>
+            <td>K–8</td>
+            <td>Amplify Science</td>
+            <td>2023</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Assets -->
+    <div class="district-card">
+      <div class="card-title">📁 Available Assets</div>
+      <div class="asset-list">
+        <div class="asset-item">
+          <div class="asset-icon">📋</div>
+          <div class="asset-name">Strategic Plan 2022–2027</div>
+          <div class="asset-date">Sep 2022</div>
+        </div>
+        <div class="asset-item">
+          <div class="asset-icon">📋</div>
+          <div class="asset-name">Strategic Plan 2018–2022</div>
+          <div class="asset-date">Aug 2018</div>
+        </div>
+        <div class="asset-item">
+          <div class="asset-icon">🔨</div>
+          <div class="asset-name">Board Meeting — Math Adoption</div>
+          <div class="asset-date">Mar 2024</div>
+        </div>
+        <div class="asset-item">
+          <div class="asset-icon">🔨</div>
+          <div class="asset-name">Board Meeting — Curriculum Review</div>
+          <div class="asset-date">Nov 2023</div>
+        </div>
+        <div class="asset-item">
+          <div class="asset-icon">💰</div>
+          <div class="asset-name">PO: Illustrative Mathematics — $4.2M</div>
+          <div class="asset-date">Jul 2022</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contacts -->
+    <div class="district-card">
+      <div class="card-title">👤 Contacts</div>
+      <div class="contacts-list">
+        <div class="contact-row">
+          <div class="contact-avatar">AH</div>
+          <div class="contact-info">
+            <div class="contact-name">Alberto Carvalho</div>
+            <div class="contact-role">Superintendent</div>
+            <div class="contact-email">acarvalho@lausd.net</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-avatar">YT</div>
+          <div class="contact-info">
+            <div class="contact-name">Yvonne T. Chan</div>
+            <div class="contact-role">Chief Academic Officer</div>
+            <div class="contact-email">ytchan@lausd.net</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-avatar">RM</div>
+          <div class="contact-info">
+            <div class="contact-name">Robert Martinez</div>
+            <div class="contact-role">Dir. of Curriculum & Instruction</div>
+            <div class="contact-email">rmartinez@lausd.net</div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div class="report-preview" onclick="alert('Generating District Leader Report…')">
+        <div class="report-preview-icon">📄</div>
+        <div class="report-preview-label">Generate <span>District Leader Report</span> for LAUSD</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- STATE PANEL                                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-state" class="panel">
+  <div class="state-selector-row">
+    <select class="state-select-large" id="stateSelect" onchange="loadState()">
+      <option value="CA">California</option>
+      <option value="TX">Texas</option>
+      <option value="FL">Florida</option>
+      <option value="NY">New York</option>
+      <option value="IL">Illinois</option>
+      <option value="OH">Ohio</option>
+      <option value="GA">Georgia</option>
+      <option value="NC">North Carolina</option>
+    </select>
+    <span class="badge">SY 2023–24</span>
+  </div>
+
+  <div class="state-card full" style="margin-bottom:1.2rem">
+    <div class="card-title">📊 State Snapshot — <span id="stateNameLabel" style="color:var(--white)">California</span></div>
+    <div class="state-snapshot">
+      <div class="snap-item"><div class="snap-val" id="snap-districts">1,056</div><div class="snap-label">Total Districts</div></div>
+      <div class="snap-item"><div class="snap-val" id="snap-students">5.9M</div><div class="snap-label">Students</div></div>
+      <div class="snap-item"><div class="snap-val" id="snap-hqim">34%</div><div class="snap-label">With HQIM Math</div></div>
+      <div class="snap-item"><div class="snap-val" id="snap-ela">29%</div><div class="snap-label">With HQIM ELA</div></div>
+    </div>
+  </div>
+
+  <div class="state-layout">
+
+    <div class="state-card">
+      <div class="card-title">🔢 Top 5 Core Math Curriculum</div>
+      <div class="rank-list" id="mathRankList">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <div class="state-card">
+      <div class="card-title">📖 Top 5 Core ELA Curriculum</div>
+      <div class="rank-list" id="elaRankList">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <div class="state-card full">
+      <div class="card-title">🏛️ Relevant State Policies & Practices</div>
+      <div class="policy-list" id="policyList">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ─── TAB SWITCHING ───────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const panels = ['query','map','district','state'];
+    t.classList.toggle('active', panels[i] === id);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+// ─── QUERY LOGIC ─────────────────────────────
+const queryData = {
+  "large ca ela": {
+    title: "Large CA districts: ELA switch likelihood",
+    meta: "12 districts • Filtered: CA, ELA, Large (>10K students)",
+    headers: ["District", "State", "Enrollment", "Current ELA", "Likelihood", "Signal"],
+    rows: [
+      ["Los Angeles USD", "CA", "562,000", "Into Reading (2020)", "<span class='pill-score high'>81%</span>", "↑ Rising"],
+      ["San Diego USD", "CA", "96,000", "Benchmark Advance (2019)", "<span class='pill-score high'>76%</span>", "↑ Rising"],
+      ["Fresno USD", "CA", "70,000", "Wonders (2017)", "<span class='pill-score high'>71%</span>", "↑ Strong"],
+      ["Long Beach USD", "CA", "68,000", "StudySync (2021)", "<span class='pill-score mid'>44%</span>", "→ Stable"],
+      ["Oakland USD", "CA", "35,000", "EL Education (2022)", "<span class='pill-score low'>18%</span>", "↓ Low"],
+    ]
+  },
+  "midwest ml hqim math": {
+    title: "Midwest districts: High ML population + HQIM Math",
+    meta: "8 districts • Filtered: Midwest, ML ≥ 15%, HQIM Math adopted",
+    headers: ["District", "State", "Enrollment", "ML %", "HQIM Math Product", "Year"],
+    rows: [
+      ["Chicago Public Schools", "IL", "330,000", "38.2%", "Illustrative Math", "2022"],
+      ["Milwaukee Public Schools", "WI", "72,000", "22.4%", "Eureka Math", "2021"],
+      ["Minneapolis Public Schools", "MN", "32,000", "27.1%", "Illustrative Math", "2023"],
+      ["Columbus City Schools", "OH", "44,000", "18.9%", "Eureka Math Sq.", "2022"],
+      ["Kansas City USD 500", "KS", "21,000", "31.4%", "Illustrative Math", "2021"],
+    ]
+  },
+  "illustrative mathematics": {
+    title: "Districts adopting Illustrative Mathematics (2022–24)",
+    meta: "247 districts • Sorted by adoption year",
+    headers: ["District", "State", "Enrollment", "Grade Band", "Year", "Prior Product"],
+    rows: [
+      ["Denver Public Schools", "CO", "88,000", "6–8", "2023", "Prentice Hall"],
+      ["Minneapolis Public Schools", "MN", "32,000", "6–8", "2023", "Go Math"],
+      ["Oakland USD", "CA", "35,000", "K–5", "2022", "Bridges"],
+      ["Columbus City Schools", "OH", "44,000", "K–5", "2022", "EnVision"],
+      ["Charlotte-Meck.", "NC", "139,000", "6–8", "2024", "Glencoe"],
+    ]
+  },
+  "default": {
+    title: "Matching districts",
+    meta: "Showing top results",
+    headers: ["District", "State", "Enrollment", "Content Area", "Year Adopted", "Score"],
+    rows: [
+      ["Jefferson County Schools", "KY", "98,000", "K–5 Math", "2023", "<span class='pill-score high'>82%</span>"],
+      ["Clark County School Dist.", "NV", "330,000", "6–8 ELA", "2022", "<span class='pill-score mid'>57%</span>"],
+      ["Gwinnett County Public", "GA", "180,000", "K–5 ELA", "2023", "<span class='pill-score high'>74%</span>"],
+      ["Hillsborough County", "FL", "222,000", "6–8 Math", "2021", "<span class='pill-score low'>33%</span>"],
+      ["Broward County Schools", "FL", "265,000", "K–5 Math", "2022", "<span class='pill-score mid'>61%</span>"],
+    ]
+  }
+};
+
+function getQueryKey(q) {
+  q = q.toLowerCase();
+  if (q.includes('california') || q.includes(' ca ') || q.includes('ca,')) {
+    if (q.includes('ela')) return 'large ca ela';
+  }
+  if (q.includes('midwest') || q.includes('ml') || q.includes('multilingual')) return 'midwest ml hqim math';
+  if (q.includes('illustrative')) return 'illustrative mathematics';
+  return 'default';
+}
+
+function runQuery() {
+  const q = document.getElementById('queryInput').value.trim();
+  if (!q) return;
+
+  const thinking = document.getElementById('thinkingIndicator');
+  const results = document.getElementById('queryResults');
+  results.classList.remove('visible');
+  thinking.classList.add('visible');
+
+  const msgs = [
+    "Parsing query and applying parameter mappings…",
+    "Resolving demographic and size thresholds…",
+    "Querying district procurement records…",
+    "Ranking results by relevance…"
+  ];
+  let i = 0;
+  const textEl = document.getElementById('thinkingText');
+  const interval = setInterval(() => {
+    textEl.textContent = msgs[i % msgs.length];
+    i++;
+  }, 600);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    thinking.classList.remove('visible');
+
+    const key = getQueryKey(q);
+    const d = queryData[key];
+    document.getElementById('resultsTitle').textContent = d.title;
+    document.getElementById('resultsMeta').textContent = d.meta;
+    document.getElementById('resultsHead').innerHTML = '<tr>' + d.headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+    document.getElementById('resultsBody').innerHTML = d.rows.map(r =>
+      '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>'
+    ).join('');
+
+    results.classList.add('visible');
+    results.classList.add('fade-in');
+  }, 2400);
+}
+
+function fillQuery(el) {
+  document.getElementById('queryInput').value = el.textContent;
+}
+
+// ─── MAP LOGIC ───────────────────────────────
+const mapRows = [
+  ["Los Angeles USD", "CA", "Illustrative Math", "Math", "K–5", "2023", "<span class='hqim-tag'>HQIM</span>"],
+  ["Chicago Public Schools", "IL", "Eureka Math", "Math", "6–8", "2022", "<span class='hqim-tag'>HQIM</span>"],
+  ["Houston ISD", "TX", "HMH Into Math", "Math", "K–5", "2022", ""],
+  ["Broward County", "FL", "StudySync", "ELA", "6–8", "2023", "<span class='hqim-tag'>HQIM</span>"],
+  ["Denver Public Schools", "CO", "IM 6–8 Math", "Math", "6–8", "2023", "<span class='hqim-tag'>HQIM</span>"],
+  ["Clark County", "NV", "Benchmark Advance", "ELA", "K–5", "2022", ""],
+  ["Charlotte-Meck.", "NC", "Illustrative Math", "Math", "6–8", "2024", "<span class='hqim-tag'>HQIM</span>"],
+  ["Gwinnett County", "GA", "EL Education", "ELA", "K–5", "2023", "<span class='hqim-tag'>HQIM</span>"],
+  ["Minneapolis Public", "MN", "Illustrative Math", "Math", "6–8", "2023", "<span class='hqim-tag'>HQIM</span>"],
+  ["Philadelphia City SD", "PA", "Wit & Wisdom", "ELA", "K–5", "2022", "<span class='hqim-tag'>HQIM</span>"],
+  ["Dallas ISD", "TX", "Amplify ELA", "ELA", "6–8", "2024", ""],
+  ["Hillsborough County", "FL", "Eureka Math Sq.", "Math", "K–5", "2023", "<span class='hqim-tag'>HQIM</span>"],
+  ["Columbus City Schools", "OH", "Bridges in Math", "Math", "K–5", "2021", ""],
+  ["San Diego USD", "CA", "Wit & Wisdom", "ELA", "6–8", "2024", "<span class='hqim-tag'>HQIM</span>"],
+  ["Milwaukee Public Schools", "WI", "Eureka Math", "Math", "K–5", "2022", "<span class='hqim-tag'>HQIM</span>"],
+];
+
+function populateMapTable() {
+  document.getElementById('mapTableBody').innerHTML = mapRows.map(r =>
+    '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>'
+  ).join('');
+}
+
+function applyFilters() {
+  document.getElementById('map-district-count').textContent = (Math.floor(Math.random() * 5000) + 2000).toLocaleString();
+}
+
+function exportMap() {
+  alert('Exporting filtered results to CSV…\n\n(In production, this would download a file with all matching district records.)');
+}
+
+function resetFilters() {
+  document.getElementById('f-year').value = '2023–24';
+  document.getElementById('f-content').value = '';
+  document.getElementById('f-grade').value = '';
+  document.getElementById('f-state').value = '';
+  document.getElementById('f-lea').value = '';
+  document.getElementById('f-hqim').checked = false;
+}
+
+// ─── DISTRICT LOGIC ──────────────────────────
+function loadDistrict() {
+  const el = document.getElementById('districtLayout');
+  el.style.opacity = '0';
+  setTimeout(() => { el.style.opacity = '1'; el.style.transition = 'opacity .3s'; }, 300);
+}
+
+// ─── STATE LOGIC ─────────────────────────────
+const stateData = {
+  CA: {
+    name: "California",
+    snap: { districts: "1,056", students: "5.9M", hqim: "34%", ela: "29%" },
+    math: [
+      { name: "Illustrative Mathematics", pct: 28 },
+      { name: "Eureka Math / Eq.", pct: 22 },
+      { name: "Bridges in Mathematics", pct: 14 },
+      { name: "HMH Into Math", pct: 11 },
+      { name: "Reveal Math", pct: 9 },
+    ],
+    ela: [
+      { name: "Benchmark Advance", pct: 24 },
+      { name: "Into Reading (HMH)", pct: 19 },
+      { name: "Wonders (McGraw-Hill)", pct: 17 },
+      { name: "EL Education", pct: 12 },
+      { name: "Wit & Wisdom", pct: 10 },
+    ],
+    policies: [
+      { name: "CA Instructional Materials Adoption (IMA) Cycle", status: "active", desc: "California reviews and adopts Math and ELA materials on a 7-year cycle. Current Math adoption concluded 2022. ELA adoption is underway with recommended lists influencing district procurement statewide." },
+      { name: "Science of Reading Legislation (AB 2222)", status: "active", desc: "Effective July 2025, requires evidence-based reading instruction aligned with the science of reading. Districts must ensure K–3 materials are structured literacy-aligned, driving ELA adoption activity." },
+      { name: "Universal Screening for Early Literacy", status: "pending", desc: "Proposed legislation would require districts to use state-approved early literacy screeners K–3 and report results. Expected to increase demand for connected core ELA materials." },
+    ]
+  },
+  TX: {
+    name: "Texas",
+    snap: { districts: "1,031", students: "5.5M", hqim: "41%", ela: "38%" },
+    math: [
+      { name: "Illustrative Mathematics", pct: 31 },
+      { name: "Eureka Math", pct: 18 },
+      { name: "McGraw-Hill My Math", pct: 16 },
+      { name: "enVision Mathematics", pct: 13 },
+      { name: "Go Math!", pct: 10 },
+    ],
+    ela: [
+      { name: "TEKS Resource System", pct: 27 },
+      { name: "HMH Into Reading", pct: 22 },
+      { name: "Amplify ELA", pct: 15 },
+      { name: "StudySync", pct: 12 },
+      { name: "myPerspectives", pct: 9 },
+    ],
+    policies: [
+      { name: "TEKS Review and Adoption Cycle", status: "active", desc: "Texas Essential Knowledge and Skills are reviewed on a cycle basis. Updated Math TEKS took effect 2024–25, generating significant adoption activity for compliant materials." },
+      { name: "HB 3 Science of Reading Mandate", status: "active", desc: "Requires districts to use phonics-based, structured literacy instruction. TEA maintains a list of approved ELA/Reading materials. Districts not using approved materials must apply for waivers." },
+      { name: "Texas OER Instructional Materials Initiative", status: "monitoring", desc: "TEA has developed free, open-source K–5 Math and K–5 ELA materials (TEKS-aligned). Districts are evaluating adoption of OER vs. commercial products." },
+    ]
+  },
+  FL: {
+    name: "Florida",
+    snap: { districts: "67", students: "2.9M", hqim: "52%", ela: "46%" },
+    math: [
+      { name: "Eureka Math / Eq.", pct: 33 },
+      { name: "Illustrative Mathematics", pct: 24 },
+      { name: "HMH Into Math", pct: 18 },
+      { name: "Bridges in Mathematics", pct: 14 },
+      { name: "enVision Mathematics", pct: 8 },
+    ],
+    ela: [
+      { name: "HMH Into Reading", pct: 35 },
+      { name: "Benchmark Advance", pct: 20 },
+      { name: "EL Education", pct: 17 },
+      { name: "Wonders", pct: 14 },
+      { name: "StudySync", pct: 10 },
+    ],
+    policies: [
+      { name: "FL B.E.S.T. Standards Adoption", status: "active", desc: "Florida's Benchmarks for Excellent Student Thinking (B.E.S.T.) standards in ELA and Math were fully implemented 2022–23. Districts have been adopting BEST-aligned materials, driving significant procurement." },
+      { name: "FDOE Approved Instructional Materials List", status: "active", desc: "Florida requires districts to use state-reviewed and approved materials. The state's review process is public and directly influences which products gain market share statewide." },
+      { name: "READ Act – Science of Reading", status: "active", desc: "Requires evidence-based K–5 reading instruction and universal screening. FDOE maintains an approved curriculum list. Districts not in compliance risk funding consequences." },
+    ]
+  },
+  NY: {
+    name: "New York",
+    snap: { districts: "678", students: "2.6M", hqim: "28%", ela: "24%" },
+    math: [
+      { name: "Eureka Math", pct: 29 },
+      { name: "Engage NY", pct: 21 },
+      { name: "Illustrative Mathematics", pct: 17 },
+      { name: "enVision Mathematics", pct: 14 },
+      { name: "Bridges in Mathematics", pct: 11 },
+    ],
+    ela: [
+      { name: "Wit & Wisdom", pct: 22 },
+      { name: "Core Knowledge Language Arts", pct: 18 },
+      { name: "EL Education", pct: 16 },
+      { name: "HMH Into Reading", pct: 14 },
+      { name: "Benchmark Advance", pct: 11 },
+    ],
+    policies: [
+      { name: "NYSED Evidence-Based Literacy Instruction", status: "active", desc: "NYSED has issued guidance requiring districts to adopt evidence-based literacy curricula aligned with the science of reading. Districts receiving Title I funds face additional review requirements." },
+      { name: "NY My Brother's Keeper ELA Initiative", status: "monitoring", desc: "State initiative targeting reading proficiency for Black and Latino boys. Encourages adoption of culturally responsive and structured literacy materials in participating districts." },
+      { name: "NY Math Curriculum Requirements Update", status: "pending", desc: "Proposed NYSED framework would create a tiered approval system for math curricula. Implementation expected to incentivize shift toward EdReports-aligned products." },
+    ]
+  },
+};
+// defaults for missing states
+['IL','OH','GA','NC'].forEach(k => {
+  stateData[k] = {
+    name: {IL:'Illinois',OH:'Ohio',GA:'Georgia',NC:'North Carolina'}[k],
+    snap: { districts: k==='IL'?852:k==='OH'?610:k==='GA'?180:'115', students: k==='IL'?1.9+'M':k==='OH'?1.6+'M':k==='GA'?1.8+'M':'1.5M', hqim:'38%', ela:'31%' },
+    math: [
+      { name: "Illustrative Mathematics", pct: 26 },
+      { name: "Eureka Math", pct: 21 },
+      { name: "enVision Mathematics", pct: 15 },
+      { name: "HMH Into Math", pct: 12 },
+      { name: "Bridges in Mathematics", pct: 9 },
+    ],
+    ela: [
+      { name: "EL Education", pct: 24 },
+      { name: "HMH Into Reading", pct: 20 },
+      { name: "Wonders", pct: 15 },
+      { name: "Benchmark Advance", pct: 13 },
+      { name: "Wit & Wisdom", pct: 11 },
+    ],
+    policies: [
+      { name: "State Standards Alignment Review", status: "active", desc: "State education agency conducts periodic reviews of adopted instructional materials for standards alignment. Districts receive guidance on approved materials lists." },
+      { name: "Literacy Instruction Improvement Act", status: "pending", desc: "Proposed legislation would mandate evidence-based reading instruction K–3 and require state-approved screeners. Expected to drive ELA procurement activity over next 2 years." },
+      { name: "Math Proficiency Task Force Recommendations", status: "monitoring", desc: "State task force issued recommendations for high-quality math adoption. Non-binding but influential with district leaders and school boards." },
+    ]
+  };
+});
+
+function renderStars(rank) {
+  return rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : (rank + 1) + '.';
+}
+
+function loadState() {
+  const key = document.getElementById('stateSelect').value;
+  const d = stateData[key];
+  if (!d) return;
+
+  document.getElementById('stateNameLabel').textContent = d.name;
+  document.getElementById('snap-districts').textContent = d.snap.districts;
+  document.getElementById('snap-students').textContent = d.snap.students;
+  document.getElementById('snap-hqim').textContent = d.snap.hqim;
+  document.getElementById('snap-ela').textContent = d.snap.ela;
+
+  const renderRank = (arr) => arr.map((item, i) => `
+    <div class="rank-item">
+      <div class="rank-num ${i===0?'gold':''}">${renderStars(i)}</div>
+      <div class="rank-curriculum">${item.name}${i===0?'<span class="hqim-tag">HQIM</span>':''}</div>
+      <div class="rank-bar"><div class="rank-bar-fill" style="width:${item.pct}%"></div></div>
+      <div class="rank-pct">${item.pct}%</div>
+    </div>
+  `).join('');
+
+  document.getElementById('mathRankList').innerHTML = renderRank(d.math);
+  document.getElementById('elaRankList').innerHTML = renderRank(d.ela);
+
+  const tagClass = { active: 'tag-active', pending: 'tag-pending', monitoring: 'tag-monitoring' };
+  document.getElementById('policyList').innerHTML = d.policies.map(p => `
+    <div class="policy-item">
+      <div class="policy-header">
+        <div class="policy-name">${p.name}</div>
+        <span class="policy-tag ${tagClass[p.status]}">${p.status}</span>
+      </div>
+      <div class="policy-desc">${p.desc}</div>
+    </div>
+  `).join('');
+}
+
+// ─── SIMPLE US MAP ───────────────────────────
+const stateShapes = {
+  WA:[181,42,227,42,232,64,232,100,205,108,178,91],
+  OR:[178,91,205,108,204,156,169,172,163,134,166,100],
+  CA:[163,134,169,172,160,250,183,288,168,316,146,300,136,252,148,212,148,182,152,152,159,138],
+  NV:[163,134,200,155,210,216,182,240,160,250,146,220],
+  AZ:[182,240,210,216,227,284,200,310,170,310,160,250],
+  ID:[205,108,232,100,248,130,240,178,200,155,182,140],
+  MT:[205,108,310,82,330,130,248,130,232,100],
+  WY:[248,130,330,130,330,178,248,178],
+  CO:[248,178,330,178,330,228,248,228],
+  NM:[200,310,227,284,248,228,248,280,218,320,200,322],
+  UT:[182,240,200,155,240,178,248,228,200,248,182,240],
+  ND:[310,82,388,84,386,118,310,118,310,82],
+  SD:[310,118,386,118,386,154,308,154],
+  NE:[308,154,386,154,388,188,310,192],
+  KS:[310,192,388,188,392,222,308,224],
+  OK:[308,224,392,222,400,256,358,264,310,260],
+  TX:[310,260,358,264,400,256,436,294,420,350,384,380,350,400,300,362,280,320],
+  MN:[386,84,448,84,448,128,392,126,386,118],
+  IA:[388,188,448,128,466,150,470,168,440,170,388,172],
+  MO:[388,172,466,168,474,200,474,222,440,234,404,230,400,218],
+  AR:[388,252,404,230,440,234,474,222,470,260,420,264,400,264],
+  LA:[388,300,400,264,420,264,440,286,432,310,408,322,388,318],
+  WI:[448,128,492,110,502,140,470,148,448,128],
+  IL:[448,168,470,168,478,198,472,218,448,210,448,184],
+  MI:[490,110,522,90,530,118,510,130,502,140,492,110],
+  IN:[470,168,502,140,510,168,500,206,472,208],
+  OH:[510,168,540,148,554,168,544,202,510,202],
+  KY:[472,208,502,208,510,236,478,248,448,234],
+  TN:[478,248,510,236,542,230,562,248,530,262,478,260],
+  MS:[420,264,470,262,474,300,448,314,420,302],
+  AL:[420,302,448,314,462,338,440,354,416,344],
+  GA:[462,338,490,316,510,332,508,364,480,380,462,362],
+  FL:[480,380,508,364,536,372,552,410,530,430,492,428,470,412,464,392],
+  SC:[490,316,510,332,528,320,524,302,502,294],
+  NC:[490,286,524,280,552,268,562,282,542,298,510,298,490,302],
+  VA:[510,236,542,230,556,240,554,256,530,266,510,258],
+  WV:[510,202,544,202,554,220,542,230,510,236,510,220],
+  MD:[554,220,572,222,576,236,560,240,554,238,554,220],
+  DE:[566,210,576,210,576,224,566,226],
+  PA:[510,168,554,168,556,210,510,210],
+  NJ:[570,186,582,186,580,214,566,210,566,196],
+  NY:[510,130,570,130,574,162,570,186,554,168,510,168,510,130],
+  CT:[580,162,594,162,594,176,578,178],
+  RI:[592,154,600,154,600,168,590,168],
+  MA:[570,138,610,138,608,154,580,162,572,150],
+  VT:[552,108,572,110,572,130,552,130],
+  NH:[572,100,590,100,590,130,572,130,572,110],
+  ME:[590,80,620,80,616,114,590,118,590,100],
+  AK:[60,450,160,450,160,530,60,530],
+  HI:[400,500,460,500,460,540,400,540],
+};
+
+const stateActivity = {
+  CA:'hot', TX:'hot', FL:'hot', NY:'warm', IL:'warm', OH:'warm',
+  PA:'warm', GA:'hot', NC:'warm', WA:'warm', CO:'warm', MN:'warm',
+  MI:'warm', TN:'warm', VA:'warm', AZ:'warm',
+};
+
+function buildMap() {
+  const g = document.getElementById('states');
+  Object.entries(stateShapes).forEach(([abbr, pts]) => {
+    if (pts.length < 6) return;
+    const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    polygon.setAttribute('points', pts.join(' '));
+    polygon.setAttribute('class', 'state-path ' + (stateActivity[abbr] || ''));
+    polygon.setAttribute('data-state', abbr);
+    polygon.addEventListener('mouseenter', (e) => showTooltip(e, abbr));
+    polygon.addEventListener('mouseleave', hideTooltip);
+    polygon.addEventListener('click', () => {
+      document.getElementById('f-state').value = {
+        CA:'California',TX:'Texas',FL:'Florida',NY:'New York',IL:'Illinois',
+        OH:'Ohio',GA:'Georgia',NC:'North Carolina',PA:'Pennsylvania',
+        MI:'Michigan',WA:'Washington',CO:'Colorado',MN:'Minnesota'
+      }[abbr] || '';
+    });
+    g.appendChild(polygon);
+
+    // State label
+    const cx = pts.reduce((a,v,i)=>i%2===0?a+v:a,0)/(pts.length/2);
+    const cy = pts.reduce((a,v,i)=>i%2===1?a+v:a,0)/(pts.length/2);
+    if (['AK','HI'].includes(abbr) || pts.length < 8) return;
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', cx);
+    text.setAttribute('y', cy + 4);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('font-size', '7');
+    text.setAttribute('fill', '#8BA3BE');
+    text.setAttribute('font-family', 'Montserrat, sans-serif');
+    text.setAttribute('pointer-events', 'none');
+    text.textContent = abbr;
+    g.appendChild(text);
+  });
+}
+
+const districtCounts = {
+  CA:1056,TX:1031,FL:67,NY:678,IL:852,OH:610,GA:180,NC:115,
+  WA:295,CO:178,MN:338,PA:500,MI:540,TN:141,VA:132,
+};
+
+function showTooltip(e, abbr) {
+  const t = document.getElementById('mapTooltip');
+  const activity = stateActivity[abbr] || 'Low';
+  const count = districtCounts[abbr] || Math.floor(Math.random()*200+50);
+  t.innerHTML = `<strong>${abbr}</strong>${count} districts · ${activity === 'hot' ? '🔴 High activity' : activity === 'warm' ? '🟡 Moderate' : '⚪ Low'}`;
+  t.style.display = 'block';
+  const rect = document.getElementById('mapContainer').getBoundingClientRect();
+  t.style.left = (e.clientX - rect.left + 10) + 'px';
+  t.style.top = (e.clientY - rect.top - 30) + 'px';
+}
+
+function hideTooltip() {
+  document.getElementById('mapTooltip').style.display = 'none';
+}
+
+// ─── INIT ─────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  buildMap();
+  populateMapTable();
+  loadState();
+});
+</script>
+</body>
+</html>

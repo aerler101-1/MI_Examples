@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SlateMetric | Architectural Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#faf8ff",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-container-low": "#f2f3ff",
+                        "surface-variant": "#dae2fd",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-primary-container": "#fefcff",
+                        "surface-container": "#eaedff",
+                        "tertiary": "#006947",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#2170e4",
+                        "surface-tint": "#005ac2",
+                        "tertiary-container": "#00855b",
+                        "primary-fixed-dim": "#adc6ff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "inverse-surface": "#283044",
+                        "surface-container-highest": "#dae2fd",
+                        "on-tertiary-container": "#f5fff6",
+                        "on-background": "#131b2e",
+                        "error": "#ba1a1a",
+                        "on-surface": "#131b2e",
+                        "surface-container-high": "#e2e7ff",
+                        "on-secondary-container": "#5c647a",
+                        "on-tertiary-fixed": "#002113",
+                        "outline": "#727785",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#001a42",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "secondary-container": "#dae2fd",
+                        "outline-variant": "#c2c6d6",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "surface-dim": "#d2d9f4",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "secondary": "#565e74",
+                        "primary": "#0058be",
+                        "inverse-primary": "#adc6ff",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#d8e2ff",
+                        "surface": "#faf8ff",
+                        "on-surface-variant": "#424754"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(242, 243, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased flex">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-[#283044] text-white flex flex-col py-6 shadow-xl z-50">
+<div class="px-6 mb-10">
+<h1 class="text-lg font-black text-white tracking-tight">Slate Metric</h1>
+<p class="text-xs text-slate-400 font-medium">Architectural Intelligence</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 bg-[#3B82F6] text-white rounded-lg mx-2 px-4 py-3 transition-all duration-300" href="page1.html">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="text-sm font-semibold tracking-tight">Market Explorer</span>
+</a>
+<a class="flex items-center gap-3 text-slate-400 hover:text-white px-6 py-3 hover:bg-slate-700/50 transition-all duration-300" href="page2.html">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="text-sm font-medium tracking-tight">District Profiles</span>
+</a>
+<a class="flex items-center gap-3 text-slate-400 hover:text-white px-6 py-3 hover:bg-slate-700/50 transition-all duration-300" href="page3.html">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="text-sm font-medium tracking-tight">State Analytics</span>
+</a>
+
+</nav>
+<div class="px-2 mt-auto space-y-1">
+<a class="flex items-center gap-3 text-slate-400 hover:text-white px-4 py-3 hover:bg-slate-700/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="text-sm font-medium tracking-tight">Documentation</span>
+</a>
+<button class="w-full flex items-center gap-3 text-slate-400 hover:text-white px-4 py-3 hover:bg-slate-700/50 rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-sm font-medium tracking-tight">System Settings</span>
+</button>
+<div class="pt-4 px-4 flex items-center gap-3 border-t border-slate-700/50">
+<div class="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a curator profile male architect with sharp features in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWv7MM_VkaJCdj65HwVlF4ehRHi6fBkUM81ciyAc8AyHlhkG8MoLKaSc4ysOE-stYdX7HUxgafZAmjKL--alD8LSBpWiJ30Wgos1JiWyonBIS9R9CP6gwm9ulRduKmnHNL86d6dLqbyls5uLsvaz5phvNag5Zptngtxqj9s5pBSKxl6uZVYIJ4Gge1flSGnyxKgx7brVe-wrsHYKiGw2j5ux_mSj-3Bg8irqjRfv8tX0fg4gif5GeThBdqSlUXihncEkcxVtpkv5nT"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold text-white truncate">Curator Profile</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest">Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between px-8 py-4 w-full bg-[#faf8ff] sticky top-0 z-40 shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+<div class="flex items-center gap-8">
+<div class="flex gap-6">
+<a class="text-[#3B82F6] border-b-2 border-[#3B82F6] pb-2 font-semibold text-sm antialiased transition-colors" href="#">Dashboard</a>
+<a class="text-slate-500 hover:text-slate-900 font-medium text-sm antialiased transition-colors" href="#">Districts</a>
+<a class="text-slate-500 hover:text-slate-900 font-medium text-sm antialiased transition-colors" href="#">States</a>
+<a class="text-slate-500 hover:text-slate-900 font-medium text-sm antialiased transition-colors" href="#">Policy</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-2">
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-5 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 shadow-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                    Export Report
+                </button>
+</div>
+</header>
+<!-- Dynamic Content Section -->
+<div class="p-8 flex-1 flex flex-col gap-8">
+<!-- Central Intelligence Search -->
+<section class="max-w-4xl mx-auto w-full">
+<div class="relative group">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary" data-icon="search_spark">search_spark</span>
+</div>
+<input class="w-full bg-surface-container-highest border-none rounded-full py-5 pl-14 pr-6 text-on-surface placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 shadow-sm transition-all text-lg font-medium" placeholder="Search for LEAs, curriculum trends, or policy impacts..." type="text"/>
+<div class="absolute top-full left-6 mt-4 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none">
+<div class="glass-panel p-4 rounded-xl shadow-xl border border-white/50 max-w-xs">
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Prompt Guide</p>
+<p class="text-sm text-on-surface leading-relaxed">
+                                Try: <span class="text-primary italic">"districts with HQIM in Texas"</span> or <span class="text-primary italic">"Subject: Math, Grade: 6-8, State: Texas"</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Active Filter Tags (NLP Extraction UI) -->
+<div class="flex flex-wrap gap-2 mt-4 justify-center">
+<div class="flex items-center gap-2 bg-primary-fixed text-on-primary-fixed px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+<span class="text-[10px] text-on-primary-fixed/60 uppercase">Product:</span> HQIM
+                        <button class="material-symbols-outlined text-xs hover:text-error" data-icon="close">close</button>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-high text-on-surface px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+<span class="text-[10px] text-slate-500 uppercase">State:</span> Texas
+                        <button class="material-symbols-outlined text-xs" data-icon="close">close</button>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-high text-on-surface px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+<span class="text-[10px] text-slate-500 uppercase">Grade:</span> 6-8
+                        <button class="material-symbols-outlined text-xs" data-icon="close">close</button>
+</div>
+<button class="text-xs text-primary font-bold hover:underline px-2">Clear all filters</button>
+</div>
+</section>
+<!-- Main Exploration Workspace (Asymmetric Layout) -->
+<div class="grid grid-cols-12 gap-8 flex-1">
+<!-- Faceted Filters Sidebar (Embedded) -->
+<aside class="col-span-12 lg:col-span-3 space-y-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-sm font-bold uppercase tracking-wider text-on-surface">Filters</h3>
+<span class="material-symbols-outlined text-slate-400" data-icon="filter_list">filter_list</span>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block text-[11px] font-bold text-slate-500 uppercase mb-3">Curriculum Year</label>
+<div class="grid grid-cols-1 gap-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-sm text-on-surface-variant group-hover:text-on-surface">2024-25 (Projected)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-sm text-on-surface-variant group-hover:text-on-surface">2023-24 (Current)</span>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-bold text-slate-500 uppercase mb-3">Content Area</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-primary/20">
+<option>Mathematics</option>
+<option>ELA / Literacy</option>
+<option>Science</option>
+<option>Social Studies</option>
+</select>
+</div>
+<div>
+<label class="block text-[11px] font-bold text-slate-500 uppercase mb-3">Product Type</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-primary text-white shadow-sm">HQIM</button>
+<button class="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-secondary-container text-on-secondary-container hover:bg-slate-200">SUPPLEMENTAL</button>
+<button class="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-secondary-container text-on-secondary-container hover:bg-slate-200">OER</button>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-bold text-slate-500 uppercase mb-3">LEA ID / Name</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary/20" placeholder="Enter ID..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-slate-400 text-sm" data-icon="search">search</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-inverse-surface text-white p-6 rounded-xl shadow-xl">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-tertiary-fixed" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-xs font-bold uppercase tracking-widest">Market Insight</span>
+</div>
+<p class="text-sm text-slate-300 leading-relaxed">
+                            Texas districts show a <span class="text-tertiary-fixed font-bold">+14% surge</span> in HQIM adoption for Middle School Math compared to 2023.
+                        </p>
+</div>
+</aside>
+<!-- Map & Visualization Area -->
+<div class="col-span-12 lg:col-span-9 flex flex-col gap-6">
+<!-- Map Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)] overflow-hidden flex flex-col flex-1 min-h-[500px] relative">
+<div class="absolute top-6 left-6 z-10 flex gap-2">
+<div class="bg-white/90 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/50">
+<p class="text-[10px] font-bold uppercase text-slate-500 mb-2">Market Share Intensity</p>
+<div class="flex items-center gap-1">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<div class="w-3 h-3 rounded-full bg-on-primary-fixed-variant"></div>
+<div class="w-3 h-3 rounded-full bg-on-secondary-fixed"></div>
+<span class="text-[10px] font-medium text-on-surface ml-2">High Density</span>
+</div>
+</div>
+</div>
+<!-- Map Integration -->
+<div class="flex-1 w-full bg-surface-container relative">
+<img class="w-full h-full object-cover opacity-60" data-alt="abstract stylized topographical map of the United States with clean minimalist aesthetics and data points indicating school districts" data-location="United States" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsDBfnWlVyT2apbwumI7HkEzTkYr1VUVS7xVht2eBJSBJnv4sTZbHdqf_8yFYMqj8qC6Fe99-9X_aXgFMIe_Hw5KEp0D-Ao9ZHBWLL0dowhw6M8hoL7Wi-eCH5lwSqz9TEM6d8l2gkv5gd-SXN0xpmh816ft3D8xZ7Xtdrrwue5rwi-HOvYE6yL8ei4tKENeSMImGTiz2fsW0tIGl1NW4wqOve4N0kMkWc-dtLPUDQx0lfUB0nwrnzN0H_rEEUDqidT-oHxL9fzcG4"/>
+<!-- Overlaid Data Points (Mocking Map Pins) -->
+<div class="absolute top-1/3 left-1/4 w-8 h-8 rounded-full bg-primary/40 border-2 border-primary animate-pulse"></div>
+<div class="absolute top-1/2 left-1/2 w-12 h-12 rounded-full bg-tertiary/40 border-2 border-tertiary"></div>
+<div class="absolute top-1/4 right-1/3 w-6 h-6 rounded-full bg-primary-container/40 border-2 border-primary-container"></div>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-6 right-6 flex flex-col gap-2">
+<button class="w-10 h-10 rounded-xl bg-white shadow-lg flex items-center justify-center hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="w-10 h-10 rounded-xl bg-white shadow-lg flex items-center justify-center hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<button class="w-10 h-10 rounded-xl bg-white shadow-lg flex items-center justify-center hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+</button>
+</div>
+</div>
+<!-- Rapid Stats Row (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Identified LEAs</p>
+<h4 class="text-3xl font-black text-on-surface">1,248</h4>
+<div class="mt-4 flex items-center gap-2 text-tertiary font-bold text-xs">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                                +5.2% vs prev. search
+                            </div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">HQIM Penetration</p>
+<h4 class="text-3xl font-black text-on-surface">42.8%</h4>
+<div class="w-full h-1.5 bg-surface-container rounded-full mt-4 overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[42.8%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Curriculum Spend</p>
+<h4 class="text-3xl font-black text-on-surface">$14.2M</h4>
+<p class="text-xs text-slate-400 mt-4 font-medium italic">Estimated for Texas HQIM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

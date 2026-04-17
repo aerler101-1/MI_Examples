@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>District page</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="district">
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo">CI</div>
+        <div>
+          <h1>Curriculum Intelligence Explorer</h1>
+          <p>Multi-page concept with shared NLP context, map, district, and state views</p>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a data-page="index.html" href="index.html">Landing</a>
+        <a data-page="map.html" href="map.html">Map</a>
+        <a data-page="district.html" href="district.html">District</a>
+        <a data-page="state.html" href="state.html">State</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page">
+    <div class="section-header" style="margin-bottom:18px">
+      <div>
+        <h2 class="page-title">District page</h2>
+        <p class="page-intro">This district view concentrates the profile of a district, current curriculum, change likelihood, available assets, contacts, and a leader report example.</p>
+      </div>
+    </div>
+    
+<div class="page-grid detail-grid">
+  <aside class="panel stack">
+    <div>
+      <h3>Current query context</h3>
+      <div class="chip-row" id="districtInterpretation"></div>
+    </div>
+    <div>
+      <label>
+        District in current result set
+        <select id="districtSelect"></select>
+      </label>
+      <div class="button-row">
+        <a id="districtMapLink" class="button-link secondary" href="map.html">Return to map</a>
+        <a id="districtStateLink" class="button-link secondary" href="state.html">Open state page</a>
+      </div>
+    </div>
+    <div>
+      <h3>District-scoped metrics</h3>
+      <div class="metrics-grid" id="districtMetrics"></div>
+    </div>
+  </aside>
+  <section class="stack">
+    <div class="panel" id="districtProfile"></div>
+    <div class="panel" id="districtCurriculum"></div>
+    <div class="panel" id="districtReport"></div>
+  </section>
+</div>
+
+  </main>
+  <script src="assets/app.js"></script>
+</body>
+</html>
